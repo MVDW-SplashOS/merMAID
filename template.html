@@ -1,0 +1,424 @@
+<style>
+textarea {
+  resize: none;
+  overflow: auto;
+  min-height: 4rem;
+  max-height: 10rem;
+}
+#window {
+  width: 100%;
+  height: 100%;
+  background: #f3f3f3;
+  margin-bottom: 2rem;
+}
+#chat {
+  height: calc(100% - 6.75rem - 10rem);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overflow-anchor: auto;
+  padding: 0rem 2rem;
+}
+#bottom {
+  background: #d2d2d2;
+  width: 100%;
+  position: absolute;
+  padding: 1rem;
+  border-radius: 3rem;
+}
+#chat-input {
+  height: 4rem;
+  border-radius: 0rem 2rem 2rem 0rem;
+  border: solid 0px;
+  padding-left: 1rem;
+  padding-top: 0.72rem;
+  width: calc(100% - 2rem - 4rem);
+}
+#chat-input:focus {
+  border-color: #66afe9;
+  outline: 0;
+  box-shadow: 0rem 0rem 0.5rem 0.3rem rgba(102, 175, 233, 0.6);
+}  
+#chat-input-container{
+  width: calc(100% - 3rem);
+  min-height: 4rem;
+}
+#chat-input-alert-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  bottom: 5rem;
+}
+#chat-input-alert {
+  position: absolute;
+  background: #f9dfdd;
+  padding: 2rem 3rem;
+  border-radius: 0.75rem;
+  border: #e09e99 solid 0.2rem;
+  transform-style: preserve-3d;
+  display: none;
+}
+#chat-input-alert .show{
+  display: block;
+}
+
+#chat-input-alert::before {
+  content: "";
+  position: absolute;
+  height: 2rem;
+  width: 2rem;
+  background: #f9dfdd;
+  border: #e09e99 solid 0.2rem;
+  transform: rotate(45deg) translateZ(-1px);
+  bottom: -1rem;
+  left: calc(50% - 1rem);
+}
+#chat-input-alert::after {
+  content: "";
+  position: absolute;
+  height: 2rem;
+  width: 2rem;
+  background: #f9dfdd;
+  transform: rotate(45deg);
+  bottom: -0.72rem;
+  left: calc(50% - 1rem);
+}
+
+#chat-attachment{
+  border-radius: 2rem 0rem 0rem 2rem;
+  float: left;
+}
+#chat-input-uploads {
+  margin-top: 1rem;
+  display: none;
+}
+
+#chat-input-uploads .show {
+  display: block;
+}
+
+.chat-input-uploads-attachment {
+  background: #01689b;
+  width: fit-content;
+  padding: 0.5rem 2rem;
+  border-radius: 2rem;
+  color: #fff;
+  cursor: pointer;
+  max-width: 100%;
+}
+.chat-input-uploads-attachment:hover {
+  background: #d52b1e;
+}
+#attachment-name{
+  margin-left: 1rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: calc(100% - 3rem);
+}
+#chat-send{
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+.chat-btn {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 2rem;
+  border: solid 0px;
+  background: #01689b;
+  color: #fff;
+  cursor: pointer;
+}
+.chat-btn:hover {
+    background: #015782;
+}
+
+.chat-btn:last-child {
+	margin-left: 1rem;
+}
+
+.chat-message {
+  width: calc(100% - 2rem);
+  padding: 1rem;
+}
+.chat-reciever {
+  height: fit-content;
+  background: #62a2c1;
+  width: fit-content;
+  padding: 1rem;
+  margin: 0.5rem;
+}
+.chat-reciever:first-child {
+  border-top-right-radius: 2rem;
+}
+.chat-reciever:last-child {
+  border-bottom-left-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+}
+.chat-sender {
+  margin-left: auto;
+  margin-right: 0;
+  height: fit-content;
+  background: #cce0f1;
+  width: fit-content;
+  padding: 1rem;
+  border-radius: 2rem 2rem 0rem 2rem;
+}
+.chat-typing{
+  background: #f00;
+  background: #015782;
+  height: 2rem;
+  width: 0.5rem;
+  border-radius: 6rem;
+  margin-right: 3rem;
+  margin-left: 1rem;
+  animation: typing 1s ease-in-out;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-delay: 0ms;
+}
+.chat-typing::before {
+  content: "";
+  position: absolute;
+  background: #015782;
+  height: 2rem;
+  width: 0.5rem;
+  border-radius: 6rem;
+  margin-left: 1rem;
+  animation: typing 1s ease-in-out;
+  animation-iteration-count: infinite;
+  animation-delay: -666ms;
+}
+.chat-typing::after {
+  content: "";
+  position: absolute;
+  background: #015782;
+  height: 2rem;
+  width: 0.5rem;
+  border-radius: 6rem;
+  margin-left: 2rem;
+  animation: typing 1s ease-in-out;
+  animation-iteration-count: infinite;
+  animation-delay: -333ms;
+}
+
+#char-count{
+  position: absolute;
+  right: 2rem;
+  bottom: -2.5rem;
+  color: #646464;
+}
+
+
+.shake {
+  animation: shaking 200ms ease-in-out;
+  animation-iteration-count: infinite;
+  animation-delay: -666ms;
+}
+
+
+@keyframes typing {
+  0%   {
+    transform: scale(1, 0.50);
+  }
+  50%  {
+    transform: scale(1, 1);
+  }
+  100% {
+    transform: scale(1, 0.50);
+  }
+}
+
+
+@keyframes shaking {
+  0% {
+    transform: translateX(0)
+  }
+  25% {
+    transform: translateX(5px)
+  }
+  50% {
+    transform: translateX(-5px)
+  }
+  75% {
+    transform: translateX(5px)
+  }
+  100% {
+    transform: translateX(0)
+  }
+}
+
+
+</style>
+<div id="window">
+  <input type="file" id="attachment" style="opacity:0; height:0px;width:0px;" />
+  <div id="chat">
+
+    <div class="chat-message">
+      <div class="chat-reciever">
+        Hello, I'm an AI chatbot, Nice to meet you!<br>
+this is a new line to test resizing
+      </div>
+    </div>
+
+    <div class="chat-message">
+      <div class="chat-sender">
+        Hello
+      </div>
+    </div>
+
+    <div class="chat-message">
+      <div class="chat-reciever">
+        This is a test
+      </div>
+      <div class="chat-reciever">
+        But it seems to work fine
+      </div>
+    </div>
+
+    <div class="chat-message">
+      <div class="chat-sender">
+        thats great
+      </div>
+    </div>
+
+       <div class="chat-message">
+      <div class="chat-reciever">
+        <div class="chat-typing"></div>
+    </div></div>
+
+  </div>
+
+
+  <div id="bottom">
+    <div id="chat-input-alert-container">
+      <div id="chat-input-alert"></div>
+    </div>
+	<div id="chat-input-container">
+      <button class="chat-btn" id="chat-attachment"><i class="wem-icon-inline fa fa-upload"></i></button>
+      <textarea oninput="auto_grow(this)" id="chat-input" placeholder="Chat..." rows="4" cols="50"></textarea>
+    </div>
+    <button class="chat-btn" id="chat-send"><i class="wem-icon-inline fa fa-paper-plane"></i></button>
+	<div id="chat-input-uploads">
+        <div class="chat-input-uploads-attachment" id="chat-input-uploads-attachment"><i class="wem-icon-inline fa fa-paperclip" style="float: left;padding-right: 1rem;margin-top: 0.32rem;"></i> <div id="attachment-name">Test.txt</div></div>
+    </div>
+    <div id="char-count"></div>
+  </div>
+
+</div>
+
+
+
+
+
+
+<script>
+const el_input = document.getElementById("chat-input");
+const el_attachment = document.getElementById("attachment");
+const el_btn_attachment = document.getElementById("chat-attachment");
+const el_btn_send = document.getElementById("chat-send");
+const el_bottom = document.getElementById("bottom");
+const el_input_alert = document.getElementById("chat-input-alert");
+const el_input_uploads = document.getElementById("chat-input-uploads");
+const el_input_uploads_attachment = document.getElementById("chat-input-uploads-attachment");
+const el_attachment_name = document.getElementById("attachment-name");
+const el_char_count = document.getElementById("char-count");
+
+var presses_shift = false;
+var ai_is_generating = false;
+var ai_is_generating_timer;
+var max_chars = 10;
+
+function auto_grow(element) {
+  element.style.height = "5px";
+  element.style.height = (element.scrollHeight) + "px";
+}
+
+function focus(event){
+  console.log(event)
+
+}
+
+function inputUpdateEvent(event){
+  var oldValue = el_input.defaultValue;
+  var newValue = el_input.value;
+  if(newValue.length >= max_chars && !(event.key === "Backspace" || event.key === "Shift" || event.key === "Control" )){
+    console.log(event.key)
+    event.preventDefault();
+    el_input.value = oldValue;
+    sendFail("U kunt niet meer dan " + max_chars + " characters versturen");
+    return;
+  }
+  updateCharCount();
+}
+function keydown(event) {
+  el_input.focus();
+  if (event.key === "Enter" && !presses_shift) {
+    event.preventDefault();
+    sendMessage();
+  } else if (event.key === "Shift"){
+    presses_shift = true;
+    console.log("shift", presses_shift)
+  }
+}
+function keyup(event){
+  if (event.key === "Shift"){
+    presses_shift = false;
+	console.log("shift", presses_shift)
+  }
+}
+
+function clearUploads(){
+  el_attachment.value='';
+  el_input_uploads.classList.remove("show");
+}
+
+
+function sendMessage(){
+  if(ai_is_generating) {
+    sendFail("Even wachten tot de AI klaar is...");
+    return;
+  }
+  if(el_input.value.trim() == ""){
+    sendFail("U kunt geen lege chat sturen.");
+    return;
+  }
+
+  alert(el_input.value.trim());
+  el_input.value = "";
+  auto_grow(el_input)
+  clearUploads()
+}
+
+function sendFail(msg){
+  el_input_alert.innerText = msg;
+  el_input_alert.classList.add("show");
+  el_bottom.classList.add("shake");
+  ai_is_generating_timer = setTimeout(()=>{ el_bottom.classList.remove("shake") }, 500);
+  setTimeout(()=>{ el_input_alert.classList.remove("show") }, 5000);
+}
+
+function uploadFile(){
+  let file = el_attachment.files[0];
+  let filename = file.name;
+  el_input_uploads.classList.add("show");
+  el_attachment_name.innerText = filename;
+}
+
+function updateCharCount(){
+  el_char_count.innerText = el_input.value.length + " / " + max_chars;
+}
+updateCharCount();
+
+
+window.addEventListener("keydown", keydown);
+window.addEventListener("keyup", keyup);
+
+el_btn_send.addEventListener("click", sendMessage);
+el_btn_attachment.addEventListener("click", () => { el_attachment.click(); });
+
+el_attachment.addEventListener("change", uploadFile);
+el_input.addEventListener("input", inputUpdateEvent);
+el_input_uploads_attachment.addEventListener("click", clearUploads); 
+</script>
